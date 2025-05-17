@@ -1,0 +1,22 @@
+{
+  "name": "guaglobe",
+  "version": "1.0.0",
+  "description": "GUAglobe is my 1st try constructing a server to build my website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GUAawa/GUAglobe.git"
+  },
+  "author": "GUAqwq",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GUAawa/GUAglobe/issues"
+  },
+  "homepage": "https://github.com/GUAawa/GUAglobe#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
