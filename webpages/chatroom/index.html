@@ -4,17 +4,186 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Room</title>
+    <title>聊天室</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        #chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        #header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        #messages {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+            position: relative;
+        }
+        
+        .message.received {
+            align-self: flex-start;
+            background-color: #f1f1f1;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message.sent {
+            align-self: flex-end;
+            background-color: #0084ff;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .username {
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 0.85rem;
+        }
+        
+        .username.sent {
+            color: white;
+        }
+        
+        .username.received {
+            color: #555;
+        }
+        
+        #input-container {
+            padding: 15px;
+            background-color: #fff;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        #username {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 120px;
+        }
+        
+        #input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        #input:focus {
+            border-color: #0084ff;
+        }
+        
+        #send {
+            padding: 10px 20px;
+            background-color: #0084ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        #send:hover {
+            background-color: #0068d9;
+        }
+        
+        @media (max-width: 600px) {
+            #username {
+                width: 100px;
+            }
+            
+            #header {
+                padding: 10px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="messages">
-        <!-- <div>msg0</div> -->
+    <div id="chat-container">
+        <div id="header">聊天室</div>
+        <div id="messages"></div>
+        <div id="input-container">
+            <input type="text" placeholder="用户名" id="username" required>
+            <input type="text" placeholder="聊点什么..." id="input" required>
+            <button id="send">发送</button>
+        </div>
     </div>
-    <div>
-        <input type="input" placeholder="聊点什么" id="input" />
-        <input type="button" value="发送" id="send" />
-    </div>
+
+    <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
+    <script src="/scripts/client/chatroom/index.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messagesContainer = document.getElementById('messages');
+            let observer = null;
+
+            // 创建MutationObserver来观察消息容器中的变化
+            observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    // 检查是否有新的消息节点被添加
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        // 只处理class为"message"的节点
+                        for (let node of mutation.addedNodes) {
+                            if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('message')) {
+                                // 滚动到新消息
+                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                                break; // 处理完一个新消息就可以退出
+                            }
+                        }
+                    }
+                });
+            });
+
+            // 配置观察选项
+            const config = { 
+                childList: true,
+                subtree: true
+            };
+
+            // 开始观察
+            observer.observe(messagesContainer, config);
+        });
+    </script>
 </body>
-<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
-<script src="/scripts/client/chatroom/index.js"></script>
 </html>

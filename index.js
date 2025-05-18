@@ -1,12 +1,16 @@
+const PORT = 8000;
+
 const express = require("express");
 const {Server} = require("socket.io");
 const fs = require("fs");
 
 const app = express();
 
-app.use('/',express.static("./webpages"))
+app.use('/',express.static("./webpages"));
+app.use('/scripts/client',express.static("./scripts/client"));
+app.use('/node_modules',express.static("./node_modules"));
 
-const server = app.listen(8000,()=>{
+const server = app.listen(PORT,()=>{
     const host = server.address().address;
     const port = server.address().port;
     console.log(`Server running at ${host}:${port}`);
