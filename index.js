@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const app = express();
 
-app.use('/',express.static("./client"))
+app.use('/',express.static("./webpages"))
 
 const server = app.listen(8000,()=>{
     const host = server.address().address;
@@ -18,5 +18,5 @@ io.on("connection",(socket)=>{
     socket.on("disconnect",()=>{
         console.log("disconnected");
     })
-    require("./server/chatroom/index")(io,socket);
+    require("./scripts/server/chatroom")(io,socket);
 })
