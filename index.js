@@ -8,6 +8,7 @@ const app = express();
 
 app.use('/',express.static("./webpages"));
 app.use('/scripts/client',express.static("./scripts/client"));
+app.use('/scripts/shared',express.static("./scripts/shared"));
 app.use('/node_modules',express.static("./node_modules"));
 
 const server = app.listen(PORT,()=>{
@@ -24,3 +25,6 @@ io.on("connection",(socket)=>{
     })
     require("./scripts/server/chatroom")(io,socket);
 })
+require("./scripts/server/users/init");
+console.log(a);
+app.use("/server/users",require("./scripts/server/users/index"));
