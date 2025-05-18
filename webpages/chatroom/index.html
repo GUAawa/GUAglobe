@@ -150,40 +150,43 @@
         </div>
     </div>
 
-    <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
-    <script src="/scripts/client/chatroom/index.js"></script>
+</body>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const messagesContainer = document.getElementById('messages');
-            let observer = null;
+<script src="/scripts/shared/utils/cookie.js"></script>
+<script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
+<script src="/scripts/client/chatroom/index.js"></script>
 
-            // 创建MutationObserver来观察消息容器中的变化
-            observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    // 检查是否有新的消息节点被添加
-                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                        // 只处理class为"message"的节点
-                        for (let node of mutation.addedNodes) {
-                            if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('message')) {
-                                // 滚动到新消息
-                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                                break; // 处理完一个新消息就可以退出
-                            }
+<!--(AIed) messages变化时自动翻到最下面-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messagesContainer = document.getElementById('messages');
+        let observer = null;
+
+        // 创建MutationObserver来观察消息容器中的变化
+        observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                // 检查是否有新的消息节点被添加
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    // 只处理class为"message"的节点
+                    for (let node of mutation.addedNodes) {
+                        if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('message')) {
+                            // 滚动到新消息
+                            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                            break; // 处理完一个新消息就可以退出
                         }
                     }
-                });
+                }
             });
-
-            // 配置观察选项
-            const config = { 
-                childList: true,
-                subtree: true
-            };
-
-            // 开始观察
-            observer.observe(messagesContainer, config);
         });
-    </script>
-</body>
+
+        // 配置观察选项
+        const config = { 
+            childList: true,
+            subtree: true
+        };
+
+        // 开始观察
+        observer.observe(messagesContainer, config);
+    });
+</script>
 </html>
