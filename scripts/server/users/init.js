@@ -38,15 +38,34 @@ bindVariableToFile("map_id_to_password_hash","data/users/password_hash.json",(d)
 //id<->token
 global.map_id_to_token = {};
 global.map_token_to_id = {};
+global.map_token_to_heartbeat = {}
 global.generateToken = function(){
     return hash(Math.random().toString());
 }
 global.bindTokenToId = function(token,id){
     map_id_to_token[id] = token;
     map_token_to_id[token] = id;
+    map_token_to_heartbeat[token] = +(new Date());
 }
 global.discardToken = function(token){
     let id = map_token_to_id[token];
     delete map_id_to_token[id];
     delete map_token_to_id[token];
+    delete map_token_to_heartbeat[token];
 }
+//heart beat
+const CLEAR_INTERVAL_MS = 5*60*1000 //执行清理的时间
+const DEAD_INTERVAL_MS = 5*60*1000 //判定死亡的时间
+setInterval(()=>{
+    console.log(`*** 清理死亡token`)
+    const time_now = +(new Date())
+    for(let token in map_token_to_heartbeat){
+        if(time_now - map_token_to_heartbeat[token] <= DEAD_INTERVAL_MS){
+            console.log(`... 通过 ${token}`);
+            continue
+        }
+        console.log(`... 死亡 ${token}`);
+        discardToken(token);
+    }
+    console.log(`@@@ 清理完毕!`);
+},CLEAR_INTERVAL_MS)

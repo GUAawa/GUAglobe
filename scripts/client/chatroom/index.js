@@ -7,7 +7,11 @@ const socket = io()
 
 DOM_send.onclick = ()=>{
     console.log('send!');
-    socket.emit("client_sent_msg",`[${DOM_username.value}] ${DOM_input.value}`);
+    socket.emit("client:chatroom/send_msg",{
+        username:Cookie.get("username"),
+        password_hash:hex_sha256(Cookie.get("password")),
+        token:Cookie.get("token"),
+    },DOM_input.value);
 }
 
 socket.on("server_sent_msg",(msg)=>{
