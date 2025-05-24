@@ -339,3 +339,7 @@ function safe_add (x, y)
 
 return hex_sha256
 })()
+
+try{
+  module.exports = hex_sha256;
+}catch{}

@@ -1,5 +1,52 @@
-//读取 users 并挂到 global.users
-const fs = require("fs");
-let users_str = fs.readFileSync("../../data/users.json");
-// let users_json = JSON.parse(users_str);
-// console.log(users_json);
+//这里的大量量都会暴露于global, 因为它太核心了, 不需也不宜解耦
+
+//users.json应该存什么
+/*
+{
+    id:{ //注: 显然, id是str, 尽管它是个序数
+        username,
+        password_hash
+    }
+}
+*/
+//这样可以最简洁的快速创建核心偏静态用户数据
+//与之相对的，token是动态的，没有存储需求
+//与之相对的，app_data是非核心的，是可扩展且不必要的
+//以上两类都必须与核心数据发生关系，因而id,usr,pwd这些核心数据被存储在以users系统名命名的文件中
+//此外
+/*
+{
+    ...,
+    next:下一个还没被注册过的id:int
+}
+*/
+
+const { bindVariableToFile } = require("../utils/var_file_binder");
+const hash = require("../../shared/utils/hash");
+
+console.log("*** 正在建立用户信息映射表")
+//id->user={username,password_hash}
+bindVariableToFile("map_id_to_username","data/users/username.json",(d)=>JSON.parse(d.toString()),JSON.stringify);
+//username->id
+global.map_username_to_id = {};
+for(let id in map_id_to_username){
+    let username = map_id_to_username[id];
+    map_username_to_id[username] = id;
+}
+bindVariableToFile("next_user_id","data/users/next_id.json",(d)=>JSON.parse(d.toString()),JSON.stringify);
+bindVariableToFile("map_id_to_password_hash","data/users/password_hash.json",(d)=>JSON.parse(d.toString()),JSON.stringify)
+//id<->token
+global.map_id_to_token = {};
+global.map_token_to_id = {};
+global.generateToken = function(){
+    return hash(Math.random().toString());
+}
+global.bindTokenToId = function(token,id){
+    map_id_to_token[id] = token;
+    map_token_to_id[token] = id;
+}
+global.discardToken = function(token){
+    let id = map_token_to_id[token];
+    delete map_id_to_token[id];
+    delete map_token_to_id[token];
+}

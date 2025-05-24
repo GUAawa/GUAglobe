@@ -26,5 +26,10 @@ io.on("connection",(socket)=>{
     require("./scripts/server/chatroom")(io,socket);
 })
 require("./scripts/server/users/init");
-console.log(a);
 app.use("/server/users",require("./scripts/server/users/index"));
+
+//ctrl+C 可以挂好几个事件，似乎是按挂载顺序执行的，所以这个最终退出放在最后面
+process.on("SIGINT",()=>{
+    console.log("全部退出事项执行完毕, 退出!");
+    process.exit();
+})
