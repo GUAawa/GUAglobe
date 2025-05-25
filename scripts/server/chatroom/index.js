@@ -51,7 +51,9 @@ module.exports = {
                     id,
                 },
                 msg
-            })
+            });
+            //心跳
+            map_token_to_heartbeat[token] = +(new Date());
         })
         //恢复机制
         console.log("恢复聊天室数据...");
