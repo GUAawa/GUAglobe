@@ -65,25 +65,31 @@
         <h2>用户登录</h2>
         <form id="loginForm">
             <div class="form-group">
-                <label for="username">用户名</label>
-                <input type="text" id="username" name="username" required>
-                <div class="error-message" id="usernameError"></div>
+                <label for="username">旧用户名</label>
+                <input type="text" id="old_username" name="old_username" required>
+                <div class="error-message" id="old_usernameError"></div>
             </div>
             <div class="form-group">
-                <label for="password">密码</label>
-                <input type="password" id="password" name="password" required>
-                <div class="error-message" id="passwordError"></div>
+                <label for="password">旧密码</label>
+                <input type="password" id="old_password" name="old_password" required>
+                <div class="error-message" id="old_passwordError"></div>
             </div>
-            <button type="submit">登录</button>
-            <div>
-                <a href="/users/signup.html">注册通道</a>
-                <a href="/users/reset.html">修改账密</a>
+            <div class="form-group">
+                <label for="username">新用户名</label>
+                <input type="text" id="new_username" name="new_username" required>
+                <div class="error-message" id="new_usernameError"></div>
             </div>
+            <div class="form-group">
+                <label for="password">新密码</label>
+                <input type="password" id="new_password" name="new_password" required>
+                <div class="error-message" id="new_passwordError"></div>
+            </div>
+            <button type="submit">修改</button>
         </form>
     </div>
 </body>
 <script src="/scripts/shared/utils/hash.js"></script>
 <script src="/scripts/client/utils/post.js"></script>
 <script src="/scripts/client/utils/cookie.js"></script>
-<script src="/scripts/client/users/login.js"></script>
+<script src="/scripts/client/users/reset.js"></script>
 </html>

@@ -70,4 +70,49 @@ router.post("/unregister",express.json(),(req,res)=>{
     return 0;
 })
 
+router.post("/reset",express.json(),(req,res)=>{
+    console.log("请求修改账密")
+    const data = req.body
+    const {
+        old_username,
+        old_password_hash,
+        new_username,
+        new_password_hash,
+    } = data;
+    console.log({
+        old_username,
+        old_password_hash,
+        new_username,
+        new_password_hash,
+    });
+
+    if(new_username != old_username && new_username in map_username_to_id){
+        res.send({code:-2,msg:"新用户已存在"});
+        console.log("新用户已存在 -2");
+        return -2;
+    }
+
+    const id = map_username_to_id[old_username];
+    if(!id){
+        res.send({code:-1,msg:"旧用户不存在"});
+        console.log("旧用户不存在 -1");
+        return -1;
+    }
+    const password_hash_correct = map_id_to_password_hash[id];
+    if(password_hash_correct != old_password_hash){
+        res.send({code:-3,msg:"密码错误"});
+        console.log("密码错误 -3");
+        return -3;
+    }
+    //修改
+    map_id_to_username[id] = new_username;
+    delete map_username_to_id[old_username];
+    map_username_to_id[new_username] = id;
+    map_id_to_password_hash[id] = new_password_hash;
+
+    res.send({code:0,msg:"修改成功"})
+    console.log("修改成功 0")
+    return 0;
+})
+
 module.exports = router

@@ -1,5 +1,5 @@
-const MAX_LOG_MESSAGES = 100;
-const MAX_RECOVER_MESSAGES = 20;
+const MAX_LOG_MESSAGES = 200;
+const MAX_RECOVER_MESSAGES = 50;
 
 const {bindVariableToFile} = require("../../server/utils/var_file_binder");
 bindVariableToFile("chatroom_messages","data\\chatroom\\messages.json",(d)=>JSON.parse(d.toString()),JSON.stringify);

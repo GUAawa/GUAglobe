@@ -7,6 +7,7 @@ const fs = require("fs");
 const app = express();
 
 app.use('/',express.static("./webpages"));
+app.use('/audio',express.static("./audio"));
 app.use('/scripts/client',express.static("./scripts/client"));
 app.use('/scripts/shared',express.static("./scripts/shared"));
 app.use('/node_modules',express.static("./node_modules"));

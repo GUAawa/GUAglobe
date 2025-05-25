@@ -19,6 +19,7 @@ DOM_send.onclick = ()=>{
     DOM_input.value = ''; //清空
 }
 
+const audio_new_msg = new Audio("/audio/chatroom/new_msg.wav");
 socket.on("server:send_msg",(data)=>{
     const {user:{id,username},msg,time} = data;
     const content = `(${new Date(time).toLocaleTimeString()})[${username}] ${msg}`
@@ -26,6 +27,7 @@ socket.on("server:send_msg",(data)=>{
     DOM_msg.className = "message";
     DOM_msg.innerHTML = content;
     DOM_messages.appendChild(DOM_msg);
+    audio_new_msg.play();
 })
 
 socket.on("server:send_err",(code,msg)=>{
