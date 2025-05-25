@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户登录</title>
+    <title>用户注册</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -62,7 +62,7 @@
 </head>
 <body>
     <div class="login-container">
-        <h2>用户登录</h2>
+        <h2>用户注册</h2>
         <form id="loginForm">
             <div class="form-group">
                 <label for="username">用户名</label>
@@ -74,15 +74,17 @@
                 <input type="password" id="password" name="password" required>
                 <div class="error-message" id="passwordError"></div>
             </div>
-            <button type="submit">登录</button>
-            <div>
-                <a href="/users/signup.html">注册通道</a>
+            <div class="form-group">
+                <label for="inviting_code">邀请码</label>
+                <input type="text" id="inviting_code" name="inviting_code" required>
+                <div class="error-message" id="inviting_codeError"></div>
             </div>
+            <button type="submit">注册</button>
         </form>
     </div>
 </body>
 <script src="/scripts/shared/utils/hash.js"></script>
 <script src="/scripts/client/utils/post.js"></script>
 <script src="/scripts/client/utils/cookie.js"></script>
-<script src="/scripts/client/users/login.js"></script>
+<script src="/scripts/client/users/signup.js"></script>
 </html>

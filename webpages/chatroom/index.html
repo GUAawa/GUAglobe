@@ -144,7 +144,7 @@
         <div id="header">聊天室</div>
         <div id="messages"></div>
         <div id="input-container">
-            <input type="text" placeholder="用户名" id="username" required>
+            <!-- <input type="text" placeholder="用户名" id="username" required> -->
             <input type="text" placeholder="聊点什么..." id="input" required>
             <button id="send">发送</button>
         </div>
@@ -156,6 +156,8 @@
 <script src="/scripts/client/utils/post.js"></script>
 <script src="/scripts/shared/utils/hash.js"></script>
 <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
+<script> const socket = io(); </script>
+<script src="/scripts/client/users/reset_token.js"></script>
 <script src="/scripts/client/chatroom/index.js"></script>
 
 <!--(AIed) messages变化时自动翻到最下面-->

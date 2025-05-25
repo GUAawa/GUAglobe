@@ -28,7 +28,6 @@ io.on("connection",(socket)=>{
 })
 require("./scripts/server/users/init");
 app.use("/server/users",require("./scripts/server/users/index"));
-// require("./scripts/server/users/socket")
 
 //ctrl+C 可以挂好几个事件，似乎是按挂载顺序执行的，所以这个最终退出放在最后面
 process.on("SIGINT",()=>{

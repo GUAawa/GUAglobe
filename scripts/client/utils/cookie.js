@@ -16,3 +16,7 @@ const Cookie = {
         return undefined;
     }
 };
+
+try{
+    module.exports = {Cookie}
+}catch{}
