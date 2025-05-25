@@ -83,9 +83,9 @@ const express = require("express");
 const hex_sha256 = require("../../shared/utils/hash");
 const router = express.Router();
 
-router.all("/send_msg",express.json(),(req,res)=>{
+router.post("/send_msg",express.json(),(req,res)=>{
     const data = req.body
-    const {username,password,msg} = data;
+    let {username,password,msg} = data;
     const password_hash = hex_sha256(password);
     console.log("聊天室请求 (POST)")
     //获取用户信息
