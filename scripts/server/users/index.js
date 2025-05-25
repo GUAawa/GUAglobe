@@ -36,4 +36,38 @@ router.post("/signup",express.json(),(req,res)=>{
     return 0;
 })
 
+const {bindVariableToFile} = require("../utils/var_file_binder");
+bindVariableToFile("deleted_users_username","data\\users\\deleted_users.json");
+
+router.post("/unregister",express.json(),(req,res)=>{
+    const data = req.body
+    const {username,password_hash} = data;
+    console.log("请求注销");
+    console.log(username,password_hash);
+
+    if(!(username in map_username_to_id)){
+        res.send({code:-2,msg:"用户不存在"});
+        console.log("用户不存在 -2");
+        return -2;
+    }
+
+    const id = map_username_to_id[username];
+    const password_hash_correct = map_id_to_password_hash[id];
+    if(password_hash_correct != password_hash){
+        res.send({code:-3,msg:"密码错误"});
+        console.log("密码错误 -3");
+        return -3;
+    }
+
+    //注销
+    delete map_username_to_id[username];
+    delete map_id_to_username[id];
+    if(id in map_id_to_token) delete map_id_to_token[id];
+    deleted_users_username[id] = username;
+    //并不删除全部数据，因为难以解耦，只要切断id路径让它不能被找到就好了
+    res.send({code:0,msg:"注销成功"});
+    console.log("注销成功 0");
+    return 0;
+})
+
 module.exports = router

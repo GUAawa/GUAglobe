@@ -1,3 +1,5 @@
+const socket = io("/chatroom");
+
 const DOM_messages = document.getElementById("messages");
 const DOM_input = document.getElementById("input");
 const DOM_send = document.getElementById("send");
@@ -9,7 +11,7 @@ DOM_send.onclick = ()=>{
         return;
     }
     console.log('send!');
-    socket.emit("client:chatroom/send_msg",{
+    socket.emit("client:send_msg",{
         username:Cookie.get("username"),
         password_hash:hex_sha256(Cookie.get("password")),
         token:Cookie.get("token"),
@@ -17,7 +19,7 @@ DOM_send.onclick = ()=>{
     DOM_input.value = ''; //清空
 }
 
-socket.on("server:chatroom/send_msg",(data)=>{
+socket.on("server:send_msg",(data)=>{
     const {user:{id,username},msg,time} = data;
     const content = `(${new Date(time).toLocaleTimeString()})[${username}] ${msg}`
     const DOM_msg = document.createElement("p");
@@ -26,11 +28,12 @@ socket.on("server:chatroom/send_msg",(data)=>{
     DOM_messages.appendChild(DOM_msg);
 })
 
-socket.on("server:chatroom/send_err",(code,msg)=>{
+socket.on("server:send_err",(code,msg)=>{
     alert(`${msg} ERR: ${code}`);
     console.log("我不会做跳转功能");
-    // const DOM_msg = document.createElement("p");
-    // DOM_msg.className = "message";
-    // DOM_msg.innerHTML = msg;
-    // DOM_messages.appendChild(DOM_msg);
+})
+
+socket.on("server:reset_token",(token)=>{
+    Cookie.set("token",token);
+    console.log("已重设token:",token);
 })
