@@ -15,7 +15,7 @@ function new_msg(data){
     // io.emit("server:chatroom/send_msg");
 }
 const {login} = require("../users/login");
-module.exports = function(io){
+module.exports.socket = function(io){
     io_chatroom = io.of("/chatroom");
     io_chatroom.on("connection",(socket)=>{
         console.log("chatroom: connected");
@@ -78,3 +78,44 @@ module.exports = function(io){
         })
     })
 }
+
+const express = require("express");
+const hex_sha256 = require("../../shared/utils/hash");
+const router = express.Router();
+
+router.all("/send_msg",express.json(),(req,res)=>{
+    const data = req.body
+    const {username,password,msg} = data;
+    const password_hash = hex_sha256(password);
+    console.log("聊天室请求 (POST)")
+    //获取用户信息
+    //获取token
+    //登录
+    let result = login(username,password_hash)
+    if(result.code >= 0){
+        console.log("已登录")
+        token = result.token;
+    }else{
+        console.log("无效的用户信息")
+        //错误用户信息
+        res.send(result)
+        return -1;
+    }
+    console.log(`获取成功 token: ${token}`);
+    const id = map_token_to_id[token];
+    username = map_id_to_username[id];
+    console.log(`用户信息: ${id} - ${username}`);
+    new_msg({
+        user:{
+            username,
+            id,
+        },
+        msg
+    });
+    //心跳
+    map_token_to_heartbeat[token] = +(new Date());
+    res.send({code:0,msg:"发送成功"});
+    return result;
+})
+
+module.exports.router = router;
