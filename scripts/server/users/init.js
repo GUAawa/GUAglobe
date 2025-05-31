@@ -61,7 +61,7 @@ setInterval(()=>{
     const time_now = +(new Date())
     for(let token in map_token_to_heartbeat){
         if(time_now - map_token_to_heartbeat[token] <= DEAD_INTERVAL_MS){
-            console.log(`... 通过 ${token}`);
+            console.log(`... 通过 ${token} - ${time_now - map_token_to_heartbeat[token]}`);
             continue
         }
         console.log(`... 死亡 ${token}`);
@@ -69,3 +69,6 @@ setInterval(()=>{
     }
     console.log(`@@@ 清理完毕!`);
 },CLEAR_INTERVAL_MS)
+
+//permission
+bindVariableToFile("map_id_to_permission","data\\users\\permission.json");

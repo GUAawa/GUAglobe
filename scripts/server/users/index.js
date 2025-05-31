@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const {login} = require("./login");
+const {bindVariableToFile} = require("../utils/var_file_binder");
+
+bindVariableToFile("deleted_users_username","data\\users\\deleted_users.json");
 
 router.post("/login",express.json(),(req,res)=>{
     const data = req.body
@@ -9,7 +12,6 @@ router.post("/login",express.json(),(req,res)=>{
     res.send(result);
     return result;
 })
-
 let inviting_codes = [
     "supermegaultragua",
 ]
@@ -31,14 +33,11 @@ router.post("/signup",express.json(),(req,res)=>{
     map_username_to_id[username] = id;
     map_id_to_username[id] = username;
     map_id_to_password_hash[id] = password_hash;
+    map_id_to_permission[id] = 0;
     res.send({code:0,msg:"注册成功，请登录"})
     console.log("注册成功 0")
     return 0;
 })
-
-const {bindVariableToFile} = require("../utils/var_file_binder");
-bindVariableToFile("deleted_users_username","data\\users\\deleted_users.json");
-
 router.post("/unregister",express.json(),(req,res)=>{
     const data = req.body
     const {username,password_hash} = data;
@@ -69,7 +68,6 @@ router.post("/unregister",express.json(),(req,res)=>{
     console.log("注销成功 0");
     return 0;
 })
-
 router.post("/reset",express.json(),(req,res)=>{
     console.log("请求修改账密")
     const data = req.body
@@ -113,6 +111,21 @@ router.post("/reset",express.json(),(req,res)=>{
     res.send({code:0,msg:"修改成功"})
     console.log("修改成功 0")
     return 0;
+})
+router.post("/heartbeat",express.json(),(req,res)=>{
+    const data = req.body;
+    const {token} = data;
+    //验证token有效
+    const id = map_token_to_id[token];
+    console.log("heartbeat",token,id);
+    if(id === undefined){
+        res.send({code:-114,msg:"无效的token"});
+        return;
+    }
+    //heartbeat
+    map_token_to_heartbeat[token] = +(new Date());
+    res.send({code:200,msg:"beat-^v---"});
+    return;
 })
 
 module.exports = router

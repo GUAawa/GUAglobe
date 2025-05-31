@@ -1,0 +1,12 @@
+俺寻思与其在每一个应用里都加上token反馈系统太复杂了，应该解耦
+专门让每个应用都创建一个额外的user_socket...不对
+直接http发请求啊，至于应用只管驳回就好了
+然后user要给一个方便的heartbeat(token)函数
+但是我客户端也不想写重连
+做一个修饰器吧！
+修饰器(online_func)(token)会检测func的result的code，如果是-114就会调用认证接口，记录有效token之后再调用，或者发现认证失败，此时直接摆烂
+所以client/users需要exports的有{
+    heartbeat() 自动获取cookie,
+    ensure_token(func) 也是自动获取cookie,
+    都没有用户信息传入通道，满满的副作用
+}

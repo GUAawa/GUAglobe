@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>shellfish赛跑 启动中...</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            text-align: center;
+        }
+        
+        .matching-box {
+            padding: 30px 80px;
+            border: 2px dashed #4a90e2;
+            border-radius: 10px;
+            background-color: rgba(74, 144, 226, 0.1);
+            margin-bottom: 15px;
+            font-size: 28px;
+            color: #4a90e2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            min-width: 250px; /* 添加最小宽度以保持大小稳定 */
+            background-color: white; /* 添加背景色 */
+        }
+        
+        .players-info {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 0.5px;
+        }
+        
+        .player-name {
+            color: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="matching-box" id="matching_box">启动中...</div>
+        <div class="players-info">
+            匹配中玩家：<span class="player-name">XXX, XXX</span>
+        </div>
+    </div>
+</body>
+<script>
+    alert("你不会以为我做完了吧？不会吧不会吧？");
+    const DOM_matching_box = document.getElementById("matching_box");
+    setTimeout(()=>setInterval(()=>{
+        DOM_matching_box.innerHTML = "匹配中";
+        document.title = "shellfish赛跑 匹配中";
+    },1000),250);
+    setTimeout(()=>setInterval(()=>{
+        DOM_matching_box.innerHTML = "匹配中.";
+        document.title = "shellfish赛跑 匹配中.";
+    },1000),500);
+    setTimeout(()=>setInterval(()=>{
+        DOM_matching_box.innerHTML = "匹配中..";
+        document.title = "shellfish赛跑 匹配中..";
+    },1000),750);
+    setTimeout(()=>setInterval(()=>{
+        DOM_matching_box.innerHTML = "匹配中...";
+        document.title = "shellfish赛跑 匹配中...";
+        },1000),1000);
+</script>
+<script src="/scripts/client/utils/cookie.js"></script>
+<script src="/scripts/client/utils/post.js"></script>
+<script src="/scripts/client/users/utils.js"></script>
+</html>

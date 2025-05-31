@@ -16,3 +16,7 @@ async function post(url, data) {
         console.error('There was a problem with the fetch operation:', error);
     });
 }
+
+try{
+    module.exports.post = post;
+}catch{}
